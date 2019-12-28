@@ -1,11 +1,9 @@
 package com.hutaotao.webdemo.controller;
 
 
-import com.alibaba.fastjson.JSON;
 import com.hutaotao.webdemo.config.utis.MyJson;
 import com.hutaotao.webdemo.domain.User;
 import com.hutaotao.webdemo.service.UserService;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +34,10 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public MyJson Login(@RequestBody Map<String,Object> map){
         MyJson json = MyJson.defaultJson();
+        logger.info("登录操作,map【{}】",map);
         Map<String, Object> param = new HashMap<>();
         try {
-            if (map!=null || map.get("variableName") == null || map.get("password") ==null){
+            if (map == null || map.get("variableName") == null || map.get("password") ==null){
                 throw new RuntimeException("必填项未输！");
             }
             String variableName = String.valueOf(map.get("variableName"));
@@ -67,7 +66,7 @@ public class UserController {
         MyJson json = MyJson.defaultJson();
         Map<String, Object> param = new HashMap<>();
         try {
-            if (map!=null){
+            if (map==null){
                 throw new RuntimeException("必填项未输！");
             }
             String userName = String.valueOf(map.get("userName"));

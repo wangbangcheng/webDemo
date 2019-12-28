@@ -98,6 +98,26 @@
 	 <p>Copyright &copy; 2019.Company name All rights reserved.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
   </footer>
 	<script>
+		$("#registerPassword").blur(function(){
+			var password=$("#registerPassword").val().trim()
+			//密码为八位及以上并且字母数字特殊字符三项都包括
+			var strongRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+			//密码为七位及以上并且字母、数字、特殊字符三项中有两项，强度是中等
+			var mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
+			var enoughRegex = new RegExp("(?=.{6,}).*", "g");
+			if (false == enoughRegex.test(password)) {
+			} else if (strongRegex.test(password)) {
+				$(".help-block").remove();
+				$("#registerPassword").after('<lable class="help-block"><span class="qiang" style="color: green">密码强度强</span></lable>')
+			} else if (mediumRegex.test(password)) {
+				$(".help-block").remove();
+				$("#registerPassword").after('<lable class="help-block" ><span class="zhong" style="color: orange">密码强度中</span></lable>')
+			} else {
+				$(".help-block").remove();
+				$("#registerPassword").after('<lable class="help-block" ><span class="ruo" style="color: red">密码强度弱</span></lable>')
+			}
+			return true
+		})
 		function registerFrom(){
 			var registerDate = {
 				userName:$("#registerUsername").val(),
@@ -122,7 +142,7 @@
 		}
 		function submitForm(){
 			var loginDate = {
-				variableName:$("#registerUsername").val(),
+				variableName:$("#loginName").val(),
 				password:$("#loginPwd").val()
 			}
 			$.ajax({
