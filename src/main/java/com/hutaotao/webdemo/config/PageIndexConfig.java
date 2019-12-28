@@ -15,7 +15,7 @@ public class PageIndexConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         //默认地址
-        registry.addViewController("/hello/").setViewName("index");
+        registry.addViewController("/hello/").setViewName("main");
         //设置过滤优先级
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }

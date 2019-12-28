@@ -14,7 +14,7 @@ public class helloController {
 
     @RequestMapping("/index")
     public String ToIndexPage(){
-        return "index";
+        return "main";
     }
 
 }

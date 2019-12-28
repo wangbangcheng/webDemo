@@ -1,54 +1,146 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Validate Form on Submit - jQuery EasyUI Demo</title>
-    <link rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
-    <script type="text/javascript" src="/easyui/jquery.min.js"></script>
-    <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+  <title>Home</title>
+  <!-- Meta tags -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="keywords" content=""
+	 />
+  <script>
+	 addEventListener("load", function () { setTimeout(hideURLbar, 0); }, false); function hideURLbar() { window.scrollTo(0, 1); }
+  </script>
+  <!-- Meta tags -->
+  <!--stylesheets-->
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+  <!--//style sheet end here-->
+	<script type="text/javascript" src="/easyui/jquery.min.js"></script>
+  <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" rel="stylesheet">
 </head>
 <body>
-<h2>Validate Form on Submit</h2>
-<p>The form does not perform validation before being submitted.</p>
-<div style="margin:20px 0;"></div>
-<div class="easyui-panel" title="New Topic" style="width:100%;max-width:400px;padding:30px 60px;">
-    <form id="login" class="easyui-form"  data-options="novalidate:true">
-        <div style="margin-bottom:20px">
-            <input class="easyui-textbox" name="loginVariable" type="text" style="width:100%"
-                   data-options="label:'Name:',required:true">
-        </div>
-        <div style="margin-bottom:20px">
-            <input class="easyui-textbox" name="password" type="password" style="width:100%"
-                   data-options="label:'Subject:',required:true">
-        </div>
-
-    </form>
-    <div style="text-align:center;padding:5px 0">
-        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">Submit</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">Clear</a>
-    </div>
-</div>
-<script>
-    function submitForm(){
-        $('#login').form('submit',{
-            onSubmit:function(){
-                $.ajax({
-                    url:"/user/login",
-                    type:"post",
-                    data:{param:"1"},
-                    dataType:"json",
-                    success:function (ref) {
-                        alert(ref);
-                    }
-                })
-
-            }
-        });
-    }
-    function clearForm(){
-        $('#ff').form('clear');
-    }
-</script>
+  <div class="mid-class">
+	 <div class="art-right-w3ls">
+		<h2>Sign In and Sign Up</h2>
+		<form id="login" >
+		   <div class="main">
+			  <div class="form-left-to-w3l">
+				 <input type="text" id="loginName" name="name" placeholder="Name/Phone/Email"
+						required="required">
+			  </div>
+			  <div class="form-left-to-w3l ">
+				 <input type="password" id="loginPwd" name="password" placeholder="Password" required="required">
+				 <div class="clear"></div>
+			  </div>
+		   </div>
+		   <div class="left-side-forget">
+			  <input type="checkbox" class="checked">
+			  <span class="remenber-me">Remember me </span>
+		   </div>
+		   <div class="right-side-forget">
+			  <a href="#" class="for">Forgot password...?</a>
+		   </div>
+		   <div class="clear"></div>
+		   <div class="btnn">
+			  <button type="button" name="btn" onclick="submitForm()">Sign In</button>
+		   </div>
+		</form>
+		<div class="w3layouts_more-buttn">
+		   <h3>Don't Have an account..?
+			  <a href="#content1">Sign Up Here
+			  </a>
+		   </h3>
+		</div>
+		<!-- popup-->
+		<div id="content1" class="popup-effect">
+		   <div class="popup">
+			  <!--login form-->
+			  <div class="letter-w3ls">
+				 <form id="register"  method="post">
+					<div class="form-left-to-w3l">
+					   <input type="text" id="registerUsername"  name="name" placeholder="Username"
+							  required="required">
+					</div>
+					<div class="form-left-to-w3l">
+					   <input type="text" id="registerCellphone" name="name" placeholder="Phone"
+							  required="required">
+					</div>
+					<div class="form-left-to-w3l">
+					   <input type="email"  id="registerEmail" name="email" placeholder="Email" required="required">
+					</div>
+					<div class="form-left-to-w3l">
+					   <input type="password" id="registerPassword" name="password" placeholder="Password"
+							  required="required">
+					</div>
+					<div class="form-left-to-w3l margin-zero">
+					   <input type="password"   name="password" placeholder="Confirm Password"
+							  required="required">
+					</div>
+					<div class="btnn">
+					   <button type="button" onclick="registerFrom()">Sign Up</button>
+					   <br>
+					</div>
+				 </form>
+				 <div class="clear"></div>
+			  </div>
+			  <!--//login form-->
+			  <a class="close" href="#">&times;</a>
+		   </div>
+		</div>
+		<!-- //popup -->
+	 </div>
+	 <div class="art-left-w3ls">
+		<h1 class="header-w3ls">
+		   Gaze sign up & login Form
+		</h1>
+	 </div>
+  </div>
+  <footer class="bottem-wthree-footer">
+	 <p>Copyright &copy; 2019.Company name All rights reserved.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
+  </footer>
+	<script>
+		function registerFrom(){
+			var registerDate = {
+				userName:$("#registerUsername").val(),
+				cellphone:$("#registerCellphone").val(),
+				email:$("#registerEmail").val(),
+				password:$("#registerPassword").val()
+			}
+			$.ajax({
+				url:"/user/register",
+				type:"post",
+				data:JSON.stringify(registerDate),
+				dataType:"json",
+				contentType:"application/json",
+				success:function (json) {
+					if(json.flag){
+						alert(json.msg);
+					}else{
+						alert(json.msg);
+					}
+				}
+			})
+		}
+		function submitForm(){
+			var loginDate = {
+				variableName:$("#registerUsername").val(),
+				password:$("#loginPwd").val()
+			}
+			$.ajax({
+				url:"/user/login",
+				type:"post",
+				data:JSON.stringify(loginDate),
+				dataType:"json",
+				contentType:"application/json",
+				success:function (json) {
+					if(json.flag){
+						alert(json.msg);
+						window.location.href="user/toMain"
+					}else{
+						alert(json.msg);
+					}
+				}
+			})
+		}
+	</script>
 </body>
 </html>

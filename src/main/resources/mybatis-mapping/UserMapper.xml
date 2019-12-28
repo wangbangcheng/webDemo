@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hutaotao.webdemo.dao.UserMapper">
+<mapper namespace="com.hutaotao.webdemo.mapper.UserMapper">
   <resultMap id="BaseResultMap" type="com.hutaotao.webdemo.domain.User">
     <id column="ID" jdbcType="INTEGER" property="Id" />
     <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
@@ -10,7 +10,7 @@
     <result column="ADMIN_FLAG" jdbcType="BOOLEAN" property="adminFlag" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, USER_NAME, PASSWORD,EMAIL, CELLPHONE,ADMIN_FLAG
+    ID,USER_NAME,PASSWORD,EMAIL,CELLPHONE,ADMIN_FLAG
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -18,7 +18,23 @@
     from user
     where ID = #{Id,jdbcType=INTEGER}
   </select>
-  <update id="updateByNotNull" parameterType="BaseResultMap">
+
+  <select id="login" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where 1=1
+    <if test="variableName != null">
+      and ( CELLPHONE = #{variableName,jdbcType=VARCHAR}
+            or EMAIL = #{variableName,jdbcType=VARCHAR}
+            or USER_NAME = #{variableName,jdbcType=VARCHAR} )
+    </if>
+    <if test="password != null">
+      and PASSWORD = #{password,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <update id="updateByNotNull" parameterType="com.hutaotao.webdemo.domain.User">
       update user
     <trim prefix="SET" suffixOverrides=",">
       <if test="userName != null">
@@ -43,7 +59,7 @@
     </if>
   </update>
 	
-  <insert id="insertUser" parameterType="BaseResultMap">
+  <insert id="insertUser" parameterType="com.hutaotao.webdemo.domain.User">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userName != null">
@@ -81,7 +97,7 @@
     </trim>
   </insert>
 
-  <select id="selectUserByParam" resultMap="BaseResultMap" parameterType="map">
+  <select id="selectUserByParam" resultMap="BaseResultMap" parameterType="java.util.Map">
     select 
     <include refid="Base_Column_List" />
     from user
@@ -108,18 +124,14 @@
     from user
     where 1=1
   </select>
-  
-   <delete id="delete">
-        delete from user
-        where ID IN
-        <foreach collection="arr_id" item="item" index="index" open="(" close=")" separator=",">
-            #{item}
-        </foreach>
-   </delete>
 
-  <delete id="deleteByDomain" parameterType="map">
+
+  <delete id="deleteByDomain" parameterType="com.hutaotao.webdemo.domain.User">
     delete from user
     where 1=1
+    <if test="Id != null">
+      and ID = #{Id,jdbcType=INTEGER}
+    </if>
     <if test="userName != null">
       and USER_NAME = #{userName,jdbcType=VARCHAR}
     </if>

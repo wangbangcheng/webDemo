@@ -10,7 +10,7 @@ public class User {
 
     private int Id;
     private String userName;
-    private String cellPhone;
+    private String cellphone;
     private String password;
     private String email;
     private boolean adminFlag;
@@ -31,12 +31,12 @@ public class User {
         this.userName = userName;
     }
 
-    public String getCellPhone() {
-        return cellPhone;
+    public String getCellphone() {
+        return cellphone;
     }
 
-    public void setCellPhone(String cellPhone) {
-        this.cellPhone = cellPhone;
+    public void setCellphone(String cellphone) {
+        this.cellphone = cellphone;
     }
 
     public String getPassword() {
@@ -61,5 +61,17 @@ public class User {
 
     public void setAdminFlag(boolean adminFlag) {
         this.adminFlag = adminFlag;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "Id=" + Id +
+                ", userName='" + userName + '\'' +
+                ", cellPhone='" + cellphone + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", adminFlag=" + adminFlag +
+                '}';
     }
 }
