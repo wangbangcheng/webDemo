@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hutaotao.webdemo.mapper.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.hutaotao.webdemo.domain.Product">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="PRODUCT_NO" jdbcType="VARCHAR" property="productNo" />
+    <result column="PRODUCT_NAME" jdbcType="VARCHAR" property="productName" />
+    <result column="PRODUCT_PRICE" jdbcType="DECIMAL" property="productPrice" />
+    <result column="PRODUCT_NUM" jdbcType="INTEGER" property="productNum" />
+    <result column="PRODUCT_FIRST_TYPE" jdbcType="VARCHAR" property="productFirstType" />
+    <result column="PRODUCT_SECOND_TYPE" jdbcType="VARCHAR" property="productSecondType" />
+    <result column="PRODUCT_STATUS" jdbcType="VARCHAR" property="productStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID,PRODUCT_NO,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_NUM,PRODUCT_FIRST_TYPE,PRODUCT_SECOND_TYPE,PRODUCT_STATUS
+  </sql>
+  <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(1)
+    from product
+    where 1=1
+    <if test="productNo != null">
+      AND PRODUCT_NO = #{productNo,jdbcType=VARCHAR}
+    </if>
+    <if test="productSecondType != null">
+      AND PRODUCT_SECOND_TYPE = #{productSecondType,jdbcType=VARCHAR}
+    </if>
+    <if test="productFirstType != null">
+      AND PRODUCT_FIRST_TYPE = #{productFirstType,jdbcType=VARCHAR}
+    </if>
+    <if test="productPrice != null">
+      AND PRODUCT_PRICE = #{productPrice,jdbcType=INTEGER}
+    </if>
+    <if test="productName != null">
+      AND PRODUCT_NAME like CONCAT('%',#{productName},'%')
+    </if>
+    <if test="productStatus != null">
+      AND PRODUCT_STATUS  = #{productStatus,jdbcType=INTEGER}
+    </if>
+    <if test="productNum != null">
+      AND PRODUCT_STATUS  = #{productNum,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getProductsByParam" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from product
+    where 1=1
+    <if test="productNo != null">
+      AND PRODUCT_NO = #{productNo,jdbcType=VARCHAR}
+    </if>
+    <if test="productSecondType != null">
+      AND PRODUCT_SECOND_TYPE = #{productSecondType,jdbcType=VARCHAR}
+    </if>
+    <if test="productFirstType != null">
+      AND PRODUCT_FIRST_TYPE = #{productFirstType,jdbcType=VARCHAR}
+    </if>
+    <if test="minPrice != null">
+      AND PRODUCT_PRICE > #{minPrice,jdbcType=INTEGER}
+    </if>
+    <if test="maxPrice != null">
+      AND #{maxPrice,jdbcType=INTEGER} > PRODUCT_PRICE
+    </if>
+    <if test="productName != null">
+      AND PRODUCT_NAME like CONCAT('%',#{productName,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="productStatus != null">
+      AND PRODUCT_STATUS  = #{productStatus,jdbcType=INTEGER}
+    </if>
+    <if test="productStatus != null">
+      AND PRODUCT_STATUS  = #{productStatus,jdbcType=INTEGER}
+    </if>
+    <if test="pageStart != null ">
+      limit #{pageStart,jdbcType=INTEGER},5
+    </if>
+  </select>
+
+  <select id="getByProductNo" parameterType="String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product
+    where 1=1
+    <if test="productNo != null">
+      and PRODUCT_NO = #{productNo,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <update id="updateByNotNull" parameterType="com.hutaotao.webdemo.domain.Product">
+      update product
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="productSecondType != null">
+        PRODUCT_SECOND_TYPE = #{productSecondType,jdbcType=VARCHAR},
+      </if>
+      <if test="productFirstType != null">
+        PRODUCT_FIRST_TYPE = #{productFirstType,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null">
+        PRODUCT_PRICE = #{minPrice,jdbcType=INTEGER},
+      </if>
+      <if test="productName != null">
+        PRODUCT_NAME = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productStatus != null">
+        PRODUCT_STATUS  = #{productStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="productNum != null">
+        PRODUCT_NUM  = #{productNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+      WHERE 1=1
+    <if test="id != null">
+      and ID = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="productNo != null">
+      and PRODUCT_NO = #{productNo,jdbcType=VARCHAR}
+    </if>
+  </update>
+	
+  <insert id="insertProduct" parameterType="com.hutaotao.webdemo.domain.Product">
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productNo != null">
+        PRODUCT_NO,
+      </if>
+      <if test="productSecondType != null">
+        PRODUCT_SECOND_TYPE,
+      </if>
+      <if test="productFirstType != null">
+        PRODUCT_FIRST_TYPE,
+      </if>
+      <if test="productPrice != null">
+        PRODUCT_PRICE,
+      </if>
+      <if test="productName != null">
+        PRODUCT_NAME,
+      </if>
+      <if test="productNum != null">
+        PRODUCT_NUM,
+      </if>
+      <if test="productStatus != null">
+        PRODUCT_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productNo != null">
+        #{productNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productSecondType != null">
+        #{productSecondType,jdbcType=VARCHAR},
+      </if>
+      <if test="productFirstType != null">
+        #{productFirstType,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null">
+        #{productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="productNum != null">
+        #{productNum,jdbcType=INTERGER},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productStatus != null">
+        #{productStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectAll" resultMap= "BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product
+    where 1=1
+  </select>
+
+  <delete id="deleteByDomain" parameterType="com.hutaotao.webdemo.domain.Product">
+    delete from product
+    where 1=1
+    <if test="productNo != null">
+      and PRODUCT_NO  = #{productNo,jdbcType=VARCHAR}
+    </if>
+    <if test="productName != null">
+      and PRODUCT_NAME = #{productName,jdbcType=VARCHAR}
+    </if>
+  </delete>
+
+</mapper>

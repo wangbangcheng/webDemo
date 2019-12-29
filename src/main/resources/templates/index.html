@@ -14,7 +14,7 @@
   <!--stylesheets-->
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
   <!--//style sheet end here-->
-	<script type="text/javascript" src="/easyui/jquery.min.js"></script>
+	<script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
   <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" rel="stylesheet">
 </head>
 <body>
@@ -154,7 +154,7 @@
 				success:function (json) {
 					if(json.flag){
 						alert(json.msg);
-						window.location.href="user/toMain"
+						window.location.href="page/toHome"
 					}else{
 						alert(json.msg);
 					}

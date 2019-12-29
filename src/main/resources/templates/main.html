@@ -1,55 +1,102 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Validate Form on Submit - jQuery EasyUI Demo</title>
-    <link rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
-    <link rel="stylesheet" type="text/css" href="/easyui/demo.css">
-    <script type="text/javascript" src="/easyui/jquery.min.js"></script>
-    <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Remote Filtering on DataGrid - jQuery EasyUI Demo</title>
+    <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/icon.css">
+    <script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
 </head>
 <body>
-<h2>Validate Form on Submit</h2>
-<p>The form does not perform validation before being submitted.</p>
-<div style="margin:20px 0;"></div>
-<div class="easyui-panel" title="New Topic" style="width:100%;max-width:400px;padding:30px 60px;">
-    <form id="login" class="easyui-form"  data-options="novalidate:true">
-        <div style="margin-bottom:20px">
-            <input class="easyui-textbox" name="loginVariable" type="text" style="width:100%"
-                   data-options="label:'Name:',required:true">
+<h2>Remote Filtering on DataGrid</h2>
+<p >This sample shows how to apply remote filtering and pagination on a datagrid component.</p>
+<form id="ff">
+    <table id="dg" title="DataGrid" style="width:100%;height:260px">
+        <thead >
+        <tr>
+            <th data-options="field:'attr6',width:40">勾选</th>
+            <th data-options="field:'itemid',width:40">Sort ID</th>
+            <th data-options="field:'attr1',width:100">产品编号</th>
+            <th data-options="field:'productid',width:100">产品名</th>
+            <th data-options="field:'listprice',width:60,align:'right'">产品数量</th>
+            <th data-options="field:'unitcost',width:60,align:'right'">产品价格</th>
+            <th data-options="field:'attr2',width:80">产品一类</th>
+            <th data-options="field:'attr3',width:80">产品二类</th>
+            <th data-options="field:'attr4',width:80">产品状态</th>
+            <th data-options="field:'attr5',width:250">操作</th>
+        </tr>
+        <tr th:each="product,scat : ${#httpServletRequest.getAttribute('products')}">
+            <th data-options="field:'attr6',width:40">
+                <input type="checkbox" class="easyui-checkbox" name="fruit" value="Apple" >
+            </th>
+            <th data-options="field:'itemid',width:40" th:text="${scat.index}+1"></th>
+            <th data-options="field:'attr1',width:100" th:text="${product.productNo}"></th>
+            <th data-options="field:'productid',width:100" th:text="${product.productName}"></th>
+            <th data-options="field:'unitcost',width:60,align:'right'" th:text="${product.productNum}"></th>
+            <th data-options="field:'unitcost',width:60,align:'right'" th:text="${product.productPrice}"></th>
+            <th data-options="field:'attr2',width:80" th:text="${product.productFirstType}"></th>
+            <th data-options="field:'attr3',width:80" th:text="${product.productSecondType}"></th>
+            <th data-options="field:'attr4',width:80" th:text="${product.productStatus}"></th>
+            <th data-options="field:'attr5',width:250">
+                <button th:onclick="deleteByProductNo([[${product.productNo}]])" >删除</button>
+            </th>
+        </tr>
+        <div id="ft" style="padding:2px 5px;">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true"></a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true"></a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true"></a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true"></a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true"></a>
         </div>
-        <div style="margin-bottom:20px">
-            <input class="easyui-textbox" name="password" type="password" style="width:100%"
-                   data-options="label:'Subject:',required:true">
-        </div>
-
-    </form>
-    <div style="text-align:center;padding:5px 0">
-        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">Submit</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">Clear</a>
-    </div>
-</div>
+        </thead>
+    </table>
+</form>
 <script>
-    function submitForm(){
-        $('#login').form('submit',{
-            onSubmit:function(){
-                $.ajax({
-                    url:"/user/login",
-                    type:"post",
-                    data:{param:"1"},
-                    dataType:"json",
-                    success:function (ref) {
-                        alert(ref);
+    function deleteByProductNo(productNo){
+        alert(productNo)
+        if(window.confirm('是否删除商品《'+productNo+'》？')){
+            var deleteData = {'productNo':productNo}
+            $.ajax({
+                url: "/product/deleteByProductNo",
+                type: "post",
+                data: JSON.stringify(deleteData),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (json) {
+                    if (json.flag) {
+                        alert(json.msg);
+                        window.location.reload();
+                    } else {
+                        alert(json.msg);
                     }
-                })
-
-            }
-        });
-    }
-    function clearForm(){
-        $('#ff').form('clear');
+                }
+            })
+        }
     }
 </script>
+<!--<script type="text/javascript" src="/html/dataGrid/DEMO/datagrid-filter.js"></script>-->
+<!--<script type="text/javascript">-->
+<!--    $(function(){-->
+<!--        var dg = $('#dg').datagrid({-->
+<!--            url: 'datagrid33_getdata.php',-->
+<!--            pagination: true,-->
+<!--            clientPaging: false,-->
+<!--            remoteFilter: true,-->
+<!--            rownumbers: true-->
+<!--        });-->
+<!--        dg.datagrid('enableFilter', [{-->
+<!--            field:'listprice',-->
+<!--            type:'numberbox',-->
+<!--            options:{precision:1},-->
+<!--            op:['less','greater']-->
+<!--        },{-->
+<!--            field:'unitcost',-->
+<!--            type:'numberbox',-->
+<!--            options:{precision:1},-->
+<!--            op:['less','greater']-->
+<!--        }]);-->
+<!--    });-->
+<!--</script>-->
 </body>
 </html>

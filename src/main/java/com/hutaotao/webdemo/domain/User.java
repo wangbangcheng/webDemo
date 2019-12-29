@@ -9,11 +9,20 @@ package com.hutaotao.webdemo.domain;
 public class User {
 
     private int Id;
+    private String userNo;
     private String userName;
     private String cellphone;
     private String password;
     private String email;
     private boolean adminFlag;
+
+    public String getUserNo() {
+        return userNo;
+    }
+
+    public void setUserNo(String userNo) {
+        this.userNo = userNo;
+    }
 
     public int getId() {
         return Id;

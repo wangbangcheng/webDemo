@@ -1,18 +1,23 @@
 package com.hutaotao.webdemo.controller;
 
 
+import com.hutaotao.webdemo.config.utis.KeyUtils;
 import com.hutaotao.webdemo.config.utis.MyJson;
 import com.hutaotao.webdemo.domain.User;
 import com.hutaotao.webdemo.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.util.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,7 +39,7 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public MyJson Login(@RequestBody Map<String,Object> map){
+    public MyJson Login(@RequestBody Map<String,Object> map, HttpSession session){
         MyJson json = MyJson.defaultJson();
         logger.info("登录操作,map【{}】",map);
         Map<String, Object> param = new HashMap<>();
@@ -54,8 +59,13 @@ public class UserController {
             }
             logger.info("登录信息正确【{}】",user.toString());
             String msg = "，登录成功";
-            json.setMsg(StringUtils.isEmpty(user.getUserName())?(user.getCellphone()+msg):(user.getUserName()+msg));
+            json.setMsg(StringUtils.isEmpty(user.getUserName())?(user.getUserNo()+msg):(user.getUserName()+msg));
+
+            session.setAttribute("user",user);
+            session.setMaxInactiveInterval(60*60*24*3);
+
         } catch (Exception e) {
+            logger.error("未知异常",e);
             json.setFail(e.getMessage());
         }finally {
             return json;
@@ -96,6 +106,7 @@ public class UserController {
 
             logger.info("注册操作,userName【{}】",userName);
             User user = new User();
+            user.setUserNo(KeyUtils.getUserNo());
             user.setAdminFlag(false);
             user.setCellphone(cellphone);
             user.setPassword(password);
@@ -112,4 +123,5 @@ public class UserController {
             return json;
         }
     }
+
 }
