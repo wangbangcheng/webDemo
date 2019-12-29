@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.util.StringUtils;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -76,6 +78,22 @@ public class UserController {
             if (userName == null || email == null || password == null || cellphone == null){
                 throw new RuntimeException("必填项未输！");
             }
+            //号码检查
+            String phonecheck= "^[1][3,4,5,7,8,9][0-9]{9}$";
+            Pattern phoneregex=Pattern.compile(phonecheck);
+            Matcher phonematcher = phoneregex.matcher(cellphone);
+            boolean a=phonematcher.matches();
+            if(!phonematcher.matches()){
+                throw new RuntimeException("号码输入错误！");
+            }
+            //邮箱格式检查
+            String emailcheck= "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+            Pattern emailregex=Pattern.compile(emailcheck);
+            Matcher emailmatcher = emailregex.matcher(email);
+            if(!emailmatcher.matches()){
+                throw new RuntimeException("邮箱输入错误！");
+            }
+
             logger.info("注册操作,userName【{}】",userName);
             User user = new User();
             user.setAdminFlag(false);
